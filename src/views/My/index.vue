@@ -111,11 +111,17 @@ export default {
   },
   methods: {
     logout() {
-      this.$dialog.confirm({
-        title: '黑马头条',
-        message: '是否退出该账号'
-      })
-      this.$store.commit('TO_TOKEN', {})
+      this.$dialog
+        .confirm({
+          title: '黑马头条',
+          message: '是否退出该账号'
+        })
+        .then(() => {
+          this.$store.commit('TO_TOKEN', {})
+        })
+        .catch(() => {
+          // on cancel
+        })
     },
     async getUserInfo() {
       try {
