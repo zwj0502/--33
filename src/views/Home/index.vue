@@ -15,20 +15,35 @@
       <!-- <van-tab title="标签 2">内容 2</van-tab>
       <van-tab title="标签 3">内容 3</van-tab>
       <van-tab title="标签 4">内容 4</van-tab> -->
-      <span class="toutiao toutiao-gengduo"></span>
+      <span class="toutiao toutiao-gengduo" @click="isShow = true"></span>
     </van-tabs>
+    <van-popup
+      closeable
+      close-icon-position="top-left"
+      v-model="isShow"
+      position="bottom"
+      :style="{ height: '100%' }"
+    >
+      <channelEndth
+        @channel-bask=";[(isShow = false), (active = $event)]"
+        :mychannelList="channelList"
+      ></channelEndth>
+    </van-popup>
   </div>
 </template>
 
 <script>
+import channelEndth from '@/views/Home/components/channelEndth.vue'
+
 import { channelAPI } from '@/api'
 import ArticleList from './components/ArticleList.vue'
 export default {
-  components: { ArticleList },
+  components: { ArticleList, channelEndth },
   data() {
     return {
       active: 2,
-      channelList: []
+      channelList: [],
+      isShow: false
     }
   },
   created() {

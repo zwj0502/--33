@@ -20,10 +20,11 @@ request.interceptors.request.use(
       getters: { isLogin },
       state: { objtoken }
     } = store
-
     if (isLogin) {
       config.headers.Authorization = `Bearer ${objtoken.token}`
     }
+    // console.log(objtoken)
+
     return config
   },
   function (error) {

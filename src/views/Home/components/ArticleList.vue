@@ -1,6 +1,23 @@
 <template>
-  <div>
-    <ArticleItem v-for="item in articles" :key="item.art_id" :article="item" ></ArticleItem>
+  <div class="article">
+    <van-pull-refresh v-model="refreshloading" @refresh="getNextPageArticle">
+      <van-list
+        v-model="loading"
+        offset="100"
+        :immediate-check="false"
+        @load="getNextPageArticle"
+        :finished="finished"
+        finished-text="没有更多了"
+        :error.sync="error"
+        error-text="请求失败，点击重新加载"
+      >
+        <ArticleItem
+          v-for="item in articles"
+          :key="item.art_id"
+          :article="item"
+        ></ArticleItem>
+      </van-list>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -18,7 +35,12 @@ export default {
   },
   data() {
     return {
-      articles: []
+      articles: [],
+      preTimestamp: '',
+      loading: false,
+      finished: false,
+      error: false,
+      refreshloading: false
     }
   },
   created() {
@@ -31,6 +53,7 @@ export default {
         //时间戳
         //new Date()
         const { data } = await getNewsAPI(this.id, +new Date())
+        this.preTimestamp = data.data.pre_timestamp
         console.log(data)
         this.articles = data.data.results
       } catch (error) {
@@ -44,9 +67,36 @@ export default {
           }
         }
       }
+    },
+    async getNextPageArticle() {
+      try {
+        const { data } = await getNewsAPI(this.id, this.preTimestamp)
+        if (!data.data.pre_timestamp) {
+          this.finished = true
+        }
+        //添加到articles
+        if (this.loading) {
+          this.articles.push(...data.data.results)
+        } else {
+          this.articles.unshift(...data.data.results)
+          this.refreshloading = false
+        }
+        this.preTimestamp = data.data.pre_timestamp
+
+        // console.log('getNextPageArticle')
+      } catch (error) {
+        this.error = true
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
 </script>
 
-<style></style>
+<style scoped lang="less">
+.article {
+  height: calc(100vh - 92px - 83px - 100px);
+  overflow: auto;
+}
+</style>
