@@ -11,15 +11,15 @@ export default new Vuex.Store({
     createPersistedState({
       key: 'HEIMA_TOUTIAO',
       //storage:window.sessionStorage
-      reducer({ objtoken }) {
-        return { objtoken }
+      reducer({ objtoken, Mychannels }) {
+        return { objtoken, Mychannels }
       }
     })
   ],
 
   state: {
     objtoken: {},
-    a: ''
+    Mychannels: []
   },
   getters: {
     isLogin(state) {
@@ -30,6 +30,13 @@ export default new Vuex.Store({
   mutations: {
     TO_TOKEN(state, token) {
       state.objtoken = token
+    },
+    /**
+     *
+     * @param {*} channels 传过来的处理过的数组
+     */
+    TO_MY_CHANNELS(state, channels) {
+      state.Mychannels = channels
     }
   }
 })

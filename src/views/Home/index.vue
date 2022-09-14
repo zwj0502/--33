@@ -25,8 +25,11 @@
       :style="{ height: '100%' }"
     >
       <channelEndth
+        v-if="isShow"
         @channel-bask=";[(isShow = false), (active = $event)]"
         :mychannelList="channelList"
+        @del-chanel="delchannel"
+        @add-channel="addchnnel"
       ></channelEndth>
     </van-popup>
   </div>
@@ -35,8 +38,9 @@
 <script>
 import channelEndth from '@/views/Home/components/channelEndth.vue'
 
-import { channelAPI } from '@/api'
+import { channelAPI, delChannelsAPI, addChannelsAPI } from '@/api'
 import ArticleList from './components/ArticleList.vue'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   components: { ArticleList, channelEndth },
   data() {
@@ -47,9 +51,23 @@ export default {
     }
   },
   created() {
-    this.getChannel()
+    this.istorygetChannel()
   },
   methods: {
+    ...mapMutations(['TO_MY_CHANNELS']),
+    istorygetChannel() {
+      if (this.isLogin) {
+        //已经登录
+        this.getChannel()
+      } else {
+        const chnnels = this.$store.state.Mychannels
+        if (chnnels.length === 0) {
+          this.getChannel()
+        } else {
+          this.channelList = chnnels
+        }
+      }
+    },
     async getChannel() {
       try {
         const { data } = await channelAPI()
@@ -63,11 +81,48 @@ export default {
           status === 507 && this.$toast.fail('刷新再试')
         }
       }
+    },
+    async delchannel(id) {
+      try {
+        const newChannels = this.channelList.filter((item) => item.id !== id)
+        if (this.isLogin) {
+          await delChannelsAPI(id)
+        } else {
+          this.TO_MY_CHANNELS(newChannels)
+        }
+        this.channelList = newChannels
+        this.$toast.success('删除成功')
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          this.$toast.fail('请登录后删除')
+        } else {
+          throw error
+        }
+      }
+    },
+    async addchnnel(channel) {
+      try {
+        if (this.isLogin) {
+          await addChannelsAPI(channel.id, this.channelList.length)
+        } else {
+          this.TO_MY_CHANNELS([...this.channelList, channel])
+        }
+        this.channelList.push(channel)
+        this.$toast.success('添加成功')
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          this.$toast.fail('请登录后添加')
+        } else {
+          throw error
+        }
+      }
     }
+  },
+  computed: {
+    ...mapGetters(['isLogin'])
   }
 }
 </script>
-
 <style scoped lang="less">
 .navbar {
   background-color: #3296fa;
