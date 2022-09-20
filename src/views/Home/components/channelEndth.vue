@@ -45,6 +45,7 @@
 <script>
 import { getAllChannelsAPI } from '@/api'
 export default {
+  name: 'endth',
   props: {
     mychannelList: Array
   },

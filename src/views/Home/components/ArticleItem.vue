@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="$router.push(`/article/${article.art_id}`)">
     <van-cell
       v-if="article.cover.type === 0"
       :title="article.title"

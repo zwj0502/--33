@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 Vue.use(VueRouter)
 //SPA
 //首屏加载速度很慢
@@ -37,6 +36,15 @@ const routes = [
   {
     path: '/search',
     component: () => import(/*webpackChunkName:"Search"*/ '@/views/Search')
+  },
+  {
+    path: '/user',
+    component: () => import(/*webpackChunkName:"Search"*/ '@/views/User')
+  },
+  {
+    path: '/article/:articleId',
+    component: () => import(/*webpackChunkName:"Search"*/ '@/views/Article'),
+    props: true
   }
 ]
 

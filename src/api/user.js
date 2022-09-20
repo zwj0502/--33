@@ -30,3 +30,44 @@ export const getUserInfoAPI = () => {
     // }
   })
 }
+
+/**
+ * 上传图片
+ * @param {*} file 裁剪过的图片的file对象
+ * @returns
+ */
+export const uploadPhoto = (file) => {
+  const fm = new FormData()
+  fm.append('photo', file)
+  return request({
+    url: 'v1_0/user/photo',
+    method: 'PATCH',
+    data: fm
+  })
+}
+
+export const getCodeAPI = () => {
+  return request({
+    url: '/v1_0/user/profile'
+  })
+}
+
+export const getPostCodeAPI = (data) => {
+  return request({
+    url: '/v1_0/user/profile',
+    method: 'PATCH',
+    data
+  })
+}
+
+/**
+ * 获取用户收藏列表
+ * @param {*}
+ * @returns
+ */
+
+export const getCollectlistAPI = () => {
+  return request({
+    url: '/v1_0/article/collections'
+  })
+}

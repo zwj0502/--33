@@ -8,7 +8,8 @@ module.exports = {
       //若果是vant 37.5 如果自己的代码75
       //file当前编译的css文件路径
       rootValue: ({ file }) => (/vant/.test(file) ? 37.5 : 70),
-      propList: ['*']
+      propList: ['*'],
+      exclude: 'github-markdown'
     })
   ]
 }

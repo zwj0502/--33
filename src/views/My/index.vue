@@ -7,7 +7,6 @@
 
       <div class="login banner" v-if="isLogin">
         <van-row></van-row>
-
         <van-row>
           <van-col span="12">
             <van-row
@@ -30,7 +29,11 @@
 
           <van-col span="5">
             <van-row justify="space-around" align="center" style="height: 100%">
-              <van-button size="mini" round class="edit-btn"
+              <van-button
+                size="mini"
+                round
+                class="edit-btn"
+                @click="$router.push('/user')"
                 >编辑按钮</van-button
               >
             </van-row>
@@ -48,7 +51,7 @@
             <van-grid-item text="关注">
               <template #icon>{{ userInfo.follow_count }}</template>
             </van-grid-item>
-            <van-grid-item text="获赞">
+            <van-grid-item text="获赞" >
               <template #icon>{{ userInfo.like_count }}</template>
             </van-grid-item>
           </van-grid>
