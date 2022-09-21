@@ -108,7 +108,7 @@ export default {
       this.$toast.success('评论成功')
       // this.getGetcomments()
       // this.commitItem[0].reply_count = this.commitItem[0].reply_count + 1
-      this.$emit('commitItemreplycount', 1)
+      this.$emit('commitItemreplycount')
       this.content = ''
       this.isShow = false
       // this.iscommit = true

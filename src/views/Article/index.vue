@@ -208,7 +208,7 @@ export default {
     CommentsNewobj($event) {
       this.GetcommentsList.unshift($event)
     },
-    commitItemreplycount($event) {
+    commitItemreplycount() {
       this.commitItem[0].reply_count++
     },
     isisRelty() {
